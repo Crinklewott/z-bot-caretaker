@@ -4,12 +4,18 @@ module Language
   def bab_ok
     ['alright',
      'ok',
-     'hee, alright'].sample
+     'hee, alright',
+     bab_aww].sample
+  end
+
+  def bab_aww
+    ["a#{'w' * rand(10)}",
+     "ahaha, a#{'w' * rand(10)}"].sample
   end
 
   def bab_name
     ["cutie #{%w[wootie patootie].sample}",
-     "crinkle#{%w[butt bottom].sample}",
+     "crinkle#{%w[butt bottom tushie tooshie toosh tush].sample}",
      'bab'].sample
   end
 

@@ -19,7 +19,8 @@ module CareTaker
     user_id = user[/\d+/].to_i
 
     if babs.key? user_id
-      event.respond "Awww, this #{bab_name} wants #{bab_attention}"
+      event.respond "#{bab_aww.capitalize}, this #{bab_name} wants " \
+                    "#{bab_attention}"
     else
       babs[user_id] = create_bab(event, user_id)
       event.respond "#{bab_ok.capitalize} lets get you all cleaned up"
