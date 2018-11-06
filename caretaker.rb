@@ -43,5 +43,27 @@ module CareTaker
     bab.message bab_notice.capitalize
     sleep 3
     bab.ping_message bab_diaper_full
+    sleep rand(3..8)
+
+    bab_request_change(bab)
+  end
+
+  # Requests that this bab be changed
+  # TODO: Lock out all other bab change requests
+  def bab_request_change(bab)
+    bab.message 'Alright, time to get you changed!'
+    bab.lock(&method(:bab_change))
+    bab.diaper = 0
+    bab.message 'There we go! All better!'
+  end
+
+  # The things that happen during a diaper change
+  def bab_change(bab)
+    bab.message "\\*peels off the tapes of #{bab.ping}'s diaper\\*"
+    sleep rand(3..8)
+    bab.message "\\*places another, clean diaper underneath #{bab.ping}\\*"
+    sleep rand(3..8)
+    bab.message "\\*tapes #{bab.ping} up\\*"
+    sleep rand(3..8)
   end
 end

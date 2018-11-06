@@ -2,7 +2,8 @@
 
 # A watcher and state class for all you silly babs
 class CrinkleButt
-  attr_reader :watcher, :diaper
+  attr_reader :watcher, :noticed, :restrained
+  attr_accessor :diaper
 
   # Creates a CrinkleButt and attaches a watcher thread that will call
   # the passed in block at least once an hour
@@ -18,6 +19,45 @@ class CrinkleButt
     @continence = 0
     @watcher = make_watcher(&block)
   end
+
+  # Retreives the user on this server who is attached to this
+  # CrinkleButt object
+  def user
+    @event.channel.users.find do |user|
+      user.id == @bab_id
+    end
+  end
+
+  # Messages the user this CrinkleButt object is for
+  def message(text)
+    @event.respond text
+  end
+
+  def ping
+    "<@#{@bab_id}>"
+  end
+
+  # Messages the user this CrinkleButt object is for, except with a
+  # ping!
+  def ping_message(text)
+    @event.respond "#{ping}: #{text}"
+  end
+
+  # Locks this user to a specific role (Default 'Restrained'), yields
+  # to the passed-in block, and then restores the user to the roles
+  # from before
+  def lock(role = 'Restrained')
+    restrained = get_role(role)
+    previous_roles = user.roles
+
+    previous_roles.each &user.method(:remove_role)
+    user.add_role restrained
+    yield self
+    user.remove_role restrained
+    previous_roles.each &user.method(:add_role)
+  end
+
+  private
 
   # Creates a watcher thread for this CrinkleButt that updates this
   # thread at least once an hour, and then calls the passed in block
@@ -43,22 +83,10 @@ class CrinkleButt
     @bladder += 1
   end
 
-  # Retreives the user on this server who is attached to this
-  # CrinkleButt object
-  def user
-    @event.channel.users.find do |user|
-      user.id == @bab_id
+  # Fetches a role from this CrinkleButt's server by name
+  def get_role(name)
+    @event.server.roles.find do |role|
+      role.name == name
     end
-  end
-
-  # Messages the user this CrinkleButt object is for
-  def message(text)
-    @event.respond text
-  end
-
-  # Messages the user this CrinkleButt object is for, except with a
-  # ping!
-  def ping_message(text)
-    @event.respond "<@#{@bab_id}>: #{text}"
   end
 end
