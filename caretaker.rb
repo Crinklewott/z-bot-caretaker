@@ -59,11 +59,11 @@ module CareTaker
 
   # The things that happen during a diaper change
   def bab_change(bab)
-    bab.message "\\*peels off the tapes of #{bab.ping}'s diaper\\*"
-    sleep rand(3..8)
-    bab.message "\\*places another, clean diaper underneath #{bab.ping}\\*"
-    sleep rand(3..8)
-    bab.message "\\*tapes #{bab.ping} up\\*"
-    sleep rand(3..8)
+    bab.delay_message(
+      3..8,
+      "\\*peels off the tapes of #{bab.ping}'s diaper\\*",
+      "\\*places another, clean diaper underneath #{bab.ping}\\*",
+      "\\*tapes #{bab.ping} up\\*"
+    )
   end
 end

@@ -33,6 +33,7 @@ class CrinkleButt
     @event.respond text
   end
 
+  # Returns a string that will ping the attached user
   def ping
     "<@#{@bab_id}>"
   end
@@ -41,6 +42,15 @@ class CrinkleButt
   # ping!
   def ping_message(text)
     @event.respond "#{ping}: #{text}"
+  end
+
+  # Outputs a stream of messages, all with a random delay between them
+  # according to the range passed in
+  def delay_message(delay, *messages)
+    messages.each do |message|
+      message(message)
+      sleep(rand delay)
+    end
   end
 
   # Locks this user to a specific role (Default 'Restrained'), yields
