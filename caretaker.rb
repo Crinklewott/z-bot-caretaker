@@ -51,10 +51,10 @@ module CareTaker
   # Requests that this bab be changed
   # TODO: Lock out all other bab change requests
   def bab_request_change(bab)
-    bab.message 'Alright, time to get you changed!'
+    bab.message "#{bab_ok.capitalize}, time to #{bab_diaper_change}!"
     bab.lock(&method(:bab_change))
     bab.diaper = 0
-    bab.message 'There we go! All better!'
+    bab.message "#{bab_there_we_go.capitalize}! #{bab_clean_diaper.capitalize}"
   end
 
   # The things that happen during a diaper change

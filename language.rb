@@ -8,9 +8,14 @@ module Language
      bab_aww].sample
   end
 
+  def bab_there_we_go
+    ['there we go',
+     bab_ok].sample
+  end
+
   def bab_aww
-    ["a#{'w' * rand(10)}",
-     "ahaha, a#{'w' * rand(10)}"].sample
+    ["aw#{'w' * rand(10)}",
+     "ahaha, aw#{'w' * rand(10)}"].sample
   end
 
   def bab_name
@@ -42,6 +47,27 @@ module Language
   def bab_diaper_full
     ["did you just #{bab_wet} #{bab_pants}?",
      "you're soaking"].sample + bangs
+  end
+
+  def bab_encourage
+    ['it suits you!',
+     "you look #{['adorable', 'really cute'].sample}!",
+     'I like this look!'].sample
+  end
+
+  def bab_diaper_change
+    ['get you changed',
+     'clean you up',
+     "change your #{%w[diaper bum tooshie].sample}"].sample
+  end
+
+  def bab_clean_diaper
+    ['all better!',
+     "now you're all cleaned up!",
+     'a fresh new diaper!',
+     'all clean!',
+     "doesn't that #{%w[smell feel].sample} much #{%w[better nicer].sample}?",
+     "you sure do #{bab_wet} #{bab_pants} a lot"].sample
   end
 
   def bangs(num = 4)
