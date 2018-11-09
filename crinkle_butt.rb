@@ -46,15 +46,12 @@ class CrinkleButt
   # Locks this user to a specific role (Default 'Restrained'), yields
   # to the passed-in block, and then restores the user to the roles
   # from before
-  def lock(role = 'Restrained')
-    restrained = get_role(role)
-    previous_roles = user.roles
-
-    previous_roles.each &user.method(:remove_role)
+  def lock(restrained = get_role('Restrained'), normal = get_role('Normal'))
+    user.remove_role normal
     user.add_role restrained
     yield self
     user.remove_role restrained
-    previous_roles.each &user.method(:add_role)
+    user.add_role normal
   end
 
   private
