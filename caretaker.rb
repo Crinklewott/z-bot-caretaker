@@ -37,33 +37,41 @@ module CareTaker
 
   # Checks the bab passed in, and notices if their diaper needs attention
   def bab_check(bab)
-    return if bab.user.idle?
-    return unless bab.diaper > 10
+    return if bab.user.idle? || bab.diaper < 10
 
-    bab.message bab_notice.capitalize
-    sleep 3
-    bab.ping_message bab_diaper_full
-    sleep rand(3..8)
-
+    bab.message bab_notice.capitalize if rand(2).zero?
+    sleep rand(3..5)
     bab_request_change(bab)
   end
 
   # Requests that this bab be changed
   # TODO: Lock out all other bab change requests
   def bab_request_change(bab)
+    bab.ping_message bab_diaper_full
+    sleep rand(8..15)
     bab.message "#{bab_ok.capitalize}, time to #{bab_diaper_change}!"
+    bab.ping_message(bab_come.capitalize)
+
     bab.lock(&method(:bab_change))
+
     bab.diaper = 0
-    bab.message "#{bab_there_we_go.capitalize}! #{bab_clean_diaper.capitalize}"
+    bab_approval(bab)
   end
 
   # The things that happen during a diaper change
   def bab_change(bab)
     bab.delay_message(
-      3..8,
-      "\\*peels off the tapes of #{bab.ping}'s diaper\\*",
-      "\\*places another, clean diaper underneath #{bab.ping}\\*",
-      "\\*tapes #{bab.ping} up\\*"
+      8..15,
+      "\\*#{bab_remove_tapes(bab.ping)}\\*",
+      "\\*#{bab_cleaning(bab.ping)}\\*",
+      "\\*#{bab_diaper_underneath(bab.ping)}\\*",
+      "\\*#{bab_tape_up(bab.ping)}\\*"
     )
+  end
+
+  # The post-change admirement
+  def bab_approval(bab)
+    bab.message "\\*pats #{bab.ping}'s #{bab_butt}\\*" if rand(3).zero?
+    bab.message "#{bab_there_we_go.capitalize}! #{bab_clean_diaper.capitalize}"
   end
 end
